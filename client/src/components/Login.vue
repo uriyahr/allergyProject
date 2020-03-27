@@ -19,13 +19,13 @@ export default {
     }
   },
   methods: {
-    login () {
+    async login () {
       if(this.input.username != "" && this.input.password != "") {
         if(this.input.username == this.$parent.mockAccount.username && this.input.password == this.$parent.mockAccount.password){
           console.log(this.input.username);
           console.log(this.input.password);
-          this.$emit("authenticated", true);
-          this.$router.replace({name: 'Secure'});
+           await this.$emit("authenticated", true);
+           await this.$router.replace({name: 'Secure'}).catch(err => { console.log(err)});
         }else {
           console.log("The username and/or password is incorrect");
         }
