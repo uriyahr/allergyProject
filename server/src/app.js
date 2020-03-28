@@ -1,29 +1,44 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const cors = require('cors');
 const morgan = require('morgan');
-const fs = require('fs');
-const https = require('https');
+//const fs = require('fs');
+//const https = require('https');
+
 
 const app = express();
 app.use(morgan('combined'));
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
    extended : false
 }));
-app.use(bodyParser.json());
-app.use(cors());
 
 const mongoose = require('mongoose');
-// connect to mongoose database
-mongoose.connect('mongodb://localhost:27017/todo',{
+const uri = 'mongodb+srv://uriann:stanford@allrgcluster-xc2dx.mongodb.net/test?retryWrites=true&w=majority';
+
+mongoose.connect(uri,{
   useNewUrlParser: true
 });
 
-app.get('/login', (req,res) => {
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'MongoDB connection error'));
+
+const cookieParser = require('cookie-parser');
+app.use(cookieParser());
+
+
+const users = require('./usersRoutes');
+app.use("/users", users.routes);
+
+
+app.get('/login', (req,res)=> {
   res.send({
-    message: ('update from login' + req.body.username)
+        message:'hello from /login'
   })
 })
 
+// https.createServer({
+//   key: fs.readFileSync('server.key'),
+//   cert: fs.readFileSync('server.cert')
+// }),app.listen(8081, () => console.log('Server listening on port 8081'))
 
 app.listen(process.env.PORT || 8080);
