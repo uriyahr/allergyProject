@@ -1,8 +1,8 @@
 <template>
   <div id="login">
     <h2> Login </h2>
-    <input type="text" name="username" v-model="input.username" placeholder="Username">
-    <input type="text" name="password" v-model="input.password" placeholder="Password">
+    <input type="text" name="username" v-model="username" placeholder="Username">
+    <input type="text" name="password" v-model="password" placeholder="Password">
     <button type="button" v-on:click="login()">Login</button>
   </div>
 </template>
@@ -12,18 +12,21 @@ export default {
   name: 'Login',
   data () {
     return {
-      input: {
-        username: "",
-        password: ""
-      }
+      username: '',
+      name: ''
     }
   },
   methods: {
     async login () {
-      if(this.input.username != "" && this.input.password != "") {
-        if(this.input.username == this.$parent.mockAccount.username && this.input.password == this.$parent.mockAccount.password){
-          console.log(this.input.username);
-          console.log(this.input.password);
+      console.log('logging in');
+      // generate vue store ...
+
+    },
+    async loginOld () {
+      if(this.username != "" && this.password != "") {
+        if(this.username == this.$parent.mockAccount.username && this.password == this.$parent.mockAccount.password){
+          console.log(this.username);
+          console.log(this.password);
            await this.$emit("authenticated", true);
            await this.$router.replace({name: 'Secure'}).catch(err => { console.log(err)});
         }else {

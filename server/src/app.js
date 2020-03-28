@@ -33,8 +33,6 @@ app.get('/',(req,res) => {
   res.send('Server is listening on port 8080');
 });
 
-
-
 // https.createServer({
 //   key: fs.readFileSync('server.key'),
 //   cert: fs.readFileSync('server.cert')
