@@ -26,15 +26,14 @@ const cookieParser = require('cookie-parser');
 app.use(cookieParser());
 
 
-const users = require('./usersRoutes');
-app.use("/users", users.routes);
+// const users = require('./usersRoutes');
+// app.use("/users", users.routes);
+
+app.get('/',(req,res) => {
+  res.send('Server is listening on port 8080');
+});
 
 
-app.get('/login', (req,res)=> {
-  res.send({
-        message:'hello from /login'
-  })
-})
 
 // https.createServer({
 //   key: fs.readFileSync('server.key'),

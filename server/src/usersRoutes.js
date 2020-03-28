@@ -12,8 +12,22 @@ const userSchema = new mongoose.Schema({
   tokens: []
 });
 
-
-
+userSchema.pre('save', async function(next){
+  if(!this.isModified('password'))
+    return next();
+  try{
+    // generate salt
+    const salt = await bcrypt.genSalt(saltRounds);
+    // generate hash with salt
+    const hash = await bcrypt.hash(this.password, salt);
+    // override plaintext with hashed
+    this.password = hash;
+    next();
+  }catch(error){
+    console.log(error);
+    next(error);
+  }
+});
 
 // confused.... until im not
 
@@ -29,7 +43,7 @@ router.post('/', async (req,res)=>{
   }
   try{
     // checking if user exists
-    const existsUser = await User.findOne({ username = req.body.username });
+    const existsUser = await User.findOne({ username: req.body.username });
     if(existsUser) {
       return res.status(403).send({
         message: 'Username taken'
@@ -87,7 +101,7 @@ async function login(user, res){
   await user.save;
 
   return res.cookie("token",token, {
-    expires: new Data(Date.now() + 86400 * 1000) // + one day
+    expires: new Date(Date.now() + 86400 * 1000) // + one day
   }).status(200).send(user);
 }
 
