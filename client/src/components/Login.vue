@@ -1,9 +1,14 @@
 <template>
   <div id="login">
     <h2> Login </h2>
-    <input type="text" name="username" v-model="username" placeholder="Username">
-    <input type="text" name="password" v-model="password" placeholder="Password">
-    <button type="button" v-on:click="login()">Login</button>
+    <form>
+      <fieldset>
+        <h2> Log In </h2>
+        <input v-model="username" type="text" placeholder="Username">
+        <input v-model="password" type="password" placeholder="Password">
+        <p v-if="error"> {{ error }} </p>
+      </fieldset>
+    </form>
   </div>
 </template>
 
@@ -13,14 +18,27 @@ export default {
   data () {
     return {
       username: '',
-      name: ''
+      name: '',
+      error: ''
     }
   },
   methods: {
     async login () {
-      console.log('logging in');
-      // generate vue store ...
-
+      try {
+        this.press();
+        console.log('Logging In...');
+        this.error = await this.$store.dispatch('login', {
+          username: this.username,
+          password: this.password
+        });
+        console.log('Logged In!');
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    toggleLoginRegister() {
+      this.press();
+      this.$store.dispatch('toggleLoginRegister');
     },
     async loginOld () {
       if(this.username != "" && this.password != "") {
@@ -28,7 +46,6 @@ export default {
           console.log(this.username);
           console.log(this.password);
            await this.$emit("authenticated", true);
-           await this.$router.replace({name: 'Secure'}).catch(err => { console.log(err)});
         }else {
           console.log("The username and/or password is incorrect");
         }
@@ -36,8 +53,10 @@ export default {
         console.log("A username and password must be present");
       }
     },
+  },
+  computed: {
 
-  }
+  },
 }
 </script>
 <style scoped>

@@ -11,7 +11,7 @@ if (secret == undefined) {
 
 // generating token
 const generateToken = (data, expires) => {
-  return jwt.sign(data.secret, {
+  return jwt.sign(data, secret, {
     expiresIn: expires
   });
 };

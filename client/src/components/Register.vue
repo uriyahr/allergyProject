@@ -1,5 +1,10 @@
 <template>
   <div id="register">
+    <form>
+      <fieldset>
+
+      </fieldset>
+    </form>
     <h2> Register </h2>
     <input type="text" name="username" v-model="input.username" placeholder="Username">
     <input type="text" name="password" v-model="input.password" placeholder="Password">
@@ -8,26 +13,14 @@
 </template>
 
 <script>
-import AuthenticationService from '../services/AuthenticationService'
 export default {
   name: 'Register',
   data () {
     return {
-      input: {
-        username: "",
-        password: ""
-      }
+
     }
   },
   methods: {
-    async register () {
-      const response = await AuthenticationService.register({
-        username: this.input.username,
-        password: this.input.password
-      });
-      console.log(response);
-    }
-
   }
 }
 </script>

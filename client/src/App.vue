@@ -1,9 +1,8 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link v-if="authenticated" to="/login" v-on:click.native="logout" replace>Logout</router-link>
+      <router-link id="Home" to="/">Allrg</router-link>
     </div>
-    <router-view @authenticated="setAuthenticated"/>
   </div>
 </template>
 
@@ -11,13 +10,8 @@
 export default {
   name: 'App',
   data () {
-    return {
-      authenticated: false,
-      mockAccount: {
-        username: 'uri',
-        password: 'pw'
+      return {
       }
-    }
   },
   mounted () {
     if(!this.authenticated) {

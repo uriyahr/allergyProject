@@ -13,7 +13,10 @@ app.use(bodyParser.urlencoded({
 
 const mongoose = require('mongoose');
 const uri = 'mongodb+srv://uriann:stanford@allrgcluster-xc2dx.mongodb.net/test?retryWrites=true&w=majority';
-mongoose.connect(uri,{ useNewUrlParser: true , useUnifiedTopology: true });
+mongoose.connect(uri,{
+  useNewUrlParser: true ,
+  useUnifiedTopology: true
+});
 
 const cookieParser = require('cookie-parser');
 app.use(cookieParser());
