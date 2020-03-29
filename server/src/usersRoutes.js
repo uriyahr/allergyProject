@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const express = require('express');
 const router = express.Router();
-const auth = require('/')
+const auth = require('./auth');
 const saltRounds = 10;
 
 const userSchema = new mongoose.Schema({
@@ -12,39 +12,79 @@ const userSchema = new mongoose.Schema({
   tokens: []
 });
 
-userSchema.pre('save', async function(next){
-  if(!this.isModified('password'))
+userSchema.pre('save', async function (next) {
+  if (!this.isModified('password'))
     return next();
-  try{
-    // generate salt
+  try {
+    // generating salted password
     const salt = await bcrypt.genSalt(saltRounds);
-    // generate hash with salt
     const hash = await bcrypt.hash(this.password, salt);
-    // override plaintext with hashed
     this.password = hash;
     next();
-  }catch(error){
+    // save !!
+  } catch(error) {
     console.log(error);
     next(error);
   }
 });
 
-// confused.... until im not
+userSchema.methods.comparePassword = async function (password) {
+  try {
+    const isMatch = await bcrypt.compare(password, this.password);
+    return isMatch;
+  } catch (error) {
+    return false;
+  }
+};
+
+userSchema.methods.toJSON = function () {
+  var obj = this.toObject();
+  delete obj.password;
+  delete obj.tokens;
+  return obj;
+};
+
+userSchema.methods.addToken = function (token) {
+  this.tokens.push(token);
+};
+
+userSchema.methods.removeToken = function (token) {
+  this.tokens = this.tokens.filter(t => t != token);
+};
+
+userSchema.methods.removeOldTokens = function () {
+  this.tokens = auth.removeOldTokens(this.tokens);
+};
+
+userSchema.statics.verify = async function (req,res,next) {
+  const user = await User.findOne({
+    _id: req.user_id
+  });
+  if (!user || !user.tokens.includes(req.token)) {
+    return res.clearCookie('token').status(403).send({
+      error: 'Invalid User Account'
+    });
+  }
+  req.user = user;
+  next();
+};
 
 const User = mongoose.model('User', userSchema);
 
 // register user
-router.post('/', async (req,res)=>{
+router.post('/', async (req,res) => {
   console.log('creating new user...');
-  if(!req.body.username || !req.body.password || !req.body.name){
+  if (!req.body.username || !req.body.password || !req.body.name) {
     return res.status(400).send({
       message: 'name, username, password required'
     })
   }
-  try{
+  try {
     // checking if user exists
-    const existsUser = await User.findOne({ username: req.body.username });
-    if(existsUser) {
+    const existsUser = await User.findOne({
+      username: req.body.username
+    });
+    if (existsUser) {
       return res.status(403).send({
         message: 'Username taken'
       });
@@ -59,20 +99,20 @@ router.post('/', async (req,res)=>{
     console.log('creating user....');
     await user.save();
     login(user,res);
-  }catch(error){
+  } catch(error) {
     console.log(error);
     return res.sendStatus(500); // internal server error
   }
 });
 
 // login user
-router.post('/login', async (req, res)=>{
-  if(!req.body.username || !req.body.passowrd){
+router.post('/login', async (req, res) => {
+  if (!req.body.username || !req.body.passowrd) {
     return res.status(400).send({
       message: 'username and password required'
     })
   }
-  try{
+  try {
     // search user in db
     const existsUser = await User.findOne({username: req.body.username});
     if(!existsUser) {
@@ -80,21 +120,20 @@ router.post('/login', async (req, res)=>{
         message: 'the username or password is wrong'
       });
     }
-
     // check password
-    if(!await existsUser.comparePassword(req.body.password)){
+    if (!await existsUser.comparePassword(req.body.password)) {
       return res.status(403).send({
         message: 'the username or password is wrong'
       });
     }
     login(existsUser,res);
-  }catch(error){
+  } catch(error) {
     console.log(error);
     return res.sendStatus(500);
   }
 })
 
-async function login(user, res){
+async function login (user, res) {
   let token = auth.generateToken({ id: user._id}, '24h');
   user.removeOldTokens();
   user.addToken(token);
@@ -104,7 +143,6 @@ async function login(user, res){
     expires: new Date(Date.now() + 86400 * 1000) // + one day
   }).status(200).send(user);
 }
-
 
 // logout user
 router.delete('/', auth.verifyToken, User.verify, async (req, res) => {

@@ -2,9 +2,8 @@ const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const secret = 'J@NcRfUrijXn2r5u7x';
 
-// ?
 
-if(secret == undefined){
+if (secret == undefined) {
   console.log('must define jwtSecret env to continue');
   mongoose.connection.close();
   process.exit();
@@ -12,7 +11,9 @@ if(secret == undefined){
 
 // generating token
 const generateToken = (data, expires) => {
-  return jwt.sign(data.secret, {expiresIn: expires});
+  return jwt.sign(data.secret, {
+    expiresIn: expires
+  });
 };
 
 // verifying token client gave
@@ -24,13 +25,13 @@ const verifyToken = (req,res,next) => {
     });
   }
 
-  try{
+  try {
     const decoded = jwt.verify(token,secret);
     // saving user id
     req.user_id = decoded.id;
     req.token = token;
     next();
-  }catch(error){
+  } catch(error) {
     console.log(error);
     return res.status(403).send({
       message: 'Failed to authenticate token'
@@ -40,10 +41,10 @@ const verifyToken = (req,res,next) => {
 
 const removeOldTokens = (tokens) => {
   return tokens.filter(token => {
-    try{
+    try {
       jwt.verify(token, secret);
       return true;
-    }catch(error) {
+    } catch(error) {
       return false;
     }
   });
