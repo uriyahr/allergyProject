@@ -1,29 +1,29 @@
 <template>
-  <div id="app">
-    <div id="nav">
+  <v-app>
+    <v-app-bar app color="primary" dark>
+      <div class="d-flex align-center">
+        <h1>Uriyah's Website</h1>
+      </div>
+
+      <v-spacer></v-spacer>
+
+    </v-app-bar>
+
+    <v-content>
       <router-view></router-view>
-      <!-- <router-link id="Home" to="/">Allrg</router-link> -->
-    </div>
-  </div>
+    </v-content>
+  </v-app>
 </template>
 
 <script>
+
 export default {
   name: 'App',
-  data () {
-      return {
-      }
-  }
-}
-</script>
+  components: {
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+  },
+  data: () => ({
+    //
+  }),
+};
+</script>

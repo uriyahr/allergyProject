@@ -10,7 +10,7 @@ const userSchema = new mongoose.Schema({
   username: String,
   password: String,
   name: String,
-  tokens: []
+  tokens: [],
 });
 
 userSchema.pre('save', async function (next) {
@@ -47,15 +47,15 @@ userSchema.methods.toJSON = function () {
 
 userSchema.methods.addToken = function (token) {
   this.tokens.push(token);
-}
+};
 
 userSchema.methods.removeToken = function (token) {
   this.tokens = this.tokens.filter(t => t != token);
-}
+};
 
 userSchema.methods.removeOldTokens = function () {
   this.tokens = auth.removeOldTokens(this.tokens);
-}
+};
 
 userSchema.statics.verify = async function (req,res,next) {
   const user = await User.findOne({
@@ -68,17 +68,17 @@ userSchema.statics.verify = async function (req,res,next) {
   }
   req.user = user;
   next();
-}
+};
 
 const User = mongoose.model('User', userSchema);
 
-// register user
+// create a new user
 router.post('/', async (req,res) => {
   console.log('creating new user...');
   if (!req.body.username || !req.body.password) {
     return res.status(400).send({
-      message: 'username and password required'
-    })
+      message: 'name,username and password required'
+    });
   }
   try {
     // checking if user exists
@@ -108,15 +108,17 @@ router.post('/', async (req,res) => {
 
 // login user
 router.post('/login', async (req, res) => {
-  res.send("HELLO");
-  if (!req.body.username || !req.body.passowrd) {
+  console.log(req.body);
+  if (!req.body.username || !req.body.password) {
     return res.status(400).send({
       message: 'username and password required'
     });
   }
   try {
     // search user in db
-    const existsUser = await User.findOne({username: req.body.username});
+    const existsUser = await User.findOne({
+      username: req.body.username
+    });
     if(!existsUser) {
       return res.status(403).send({
         message: 'the username or password is wrong'
@@ -143,7 +145,7 @@ async function login (user, res) {
   user.addToken(token);
   await user.save;
 
-  return res.cookie("token",token, {
+  return res.cookie("token", token, {
     expires: new Date(Date.now() + 86400 * 1000) // + one day
   }).status(200).send(user);
 }

@@ -3,6 +3,8 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Login from '../components/Login.vue'
 import Register from '../components/Register.vue'
+import Secure from '../views/Secure.vue'
+import TopNavigation from '../components/TopNavigation.vue'
 
 Vue.use(VueRouter)
 
@@ -18,9 +20,19 @@ const routes = [
     component: Login
   },
   {
+    path: '/secure',
+    name: 'Secure',
+    component: Secure
+  },
+  {
     path: '/register',
     name: 'Register',
     component: Register
+  },
+  {
+    path: '/testNav',
+    name: 'TopNavigation',
+    component: TopNavigation
   },
   {
     path: '/about',
