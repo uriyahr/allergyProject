@@ -1,7 +1,8 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link id="Home" to="/">Allrg</router-link>
+      <router-view></router-view>
+      <!-- <router-link id="Home" to="/">Allrg</router-link> -->
     </div>
   </div>
 </template>
@@ -12,19 +13,6 @@ export default {
   data () {
       return {
       }
-  },
-  mounted () {
-    if(!this.authenticated) {
-      this.$router.replace({name: 'Login'});
-    }
-  },
-  methods: {
-    setAuthenticated (status) {
-      this.authenticated = status;
-    },
-    logout () {
-      this.authenticated = false;
-    }
   }
 }
 </script>

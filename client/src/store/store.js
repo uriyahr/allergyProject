@@ -1,8 +1,10 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
-import { stat } from 'fs';
 
+axios.defaults.validateStatus = () => {
+  return true;
+};
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -27,7 +29,7 @@ export default new Vuex.Store({
   },
 
   actions: {
-    async toggleLoginRegister (context) {
+     toggleLoginRegister (context) {
       try {
         context.commit('setLoginOrRegister');
       } catch (error) {
@@ -45,10 +47,16 @@ export default new Vuex.Store({
     },
     async login (context, data) {
       try {
-        let response = await axios.post('/api/users/login', data);
+        console.log('$store.login data: ', data);
+        console.log('TRYING")');
+        let response = await axios.post("/api/users/login", data);
+
+        console.log(response);
         context.commit('setUser', response.data);
+        console.log('error $store.login');
         return "";
       } catch (error) {
+        console.trace(error);
         return error.response.data.message;
       }
     },

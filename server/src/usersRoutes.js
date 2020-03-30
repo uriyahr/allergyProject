@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const express = require('express');
 const router = express.Router();
 const auth = require('./auth');
+
 const saltRounds = 10;
 
 const userSchema = new mongoose.Schema({
@@ -46,15 +47,15 @@ userSchema.methods.toJSON = function () {
 
 userSchema.methods.addToken = function (token) {
   this.tokens.push(token);
-};
+}
 
 userSchema.methods.removeToken = function (token) {
   this.tokens = this.tokens.filter(t => t != token);
-};
+}
 
 userSchema.methods.removeOldTokens = function () {
   this.tokens = auth.removeOldTokens(this.tokens);
-};
+}
 
 userSchema.statics.verify = async function (req,res,next) {
   const user = await User.findOne({
@@ -67,16 +68,16 @@ userSchema.statics.verify = async function (req,res,next) {
   }
   req.user = user;
   next();
-};
+}
 
 const User = mongoose.model('User', userSchema);
 
 // register user
 router.post('/', async (req,res) => {
   console.log('creating new user...');
-  if (!req.body.username || !req.body.password || !req.body.name) {
+  if (!req.body.username || !req.body.password) {
     return res.status(400).send({
-      message: 'name, username, password required'
+      message: 'username and password required'
     })
   }
   try {
@@ -94,8 +95,8 @@ router.post('/', async (req,res) => {
     const user = new User({
       username: req.body.username,
       password: req.body.password,
-      name: req.body.name
     });
+
     console.log('creating user....');
     await user.save();
     login(user,res);
@@ -107,10 +108,11 @@ router.post('/', async (req,res) => {
 
 // login user
 router.post('/login', async (req, res) => {
+  res.send("HELLO");
   if (!req.body.username || !req.body.passowrd) {
     return res.status(400).send({
       message: 'username and password required'
-    })
+    });
   }
   try {
     // search user in db
@@ -134,7 +136,9 @@ router.post('/login', async (req, res) => {
 })
 
 async function login (user, res) {
-  let token = auth.generateToken({ id: user._id}, '24h');
+  let token = auth.generateToken({
+    id: user._id
+  }, "24h");
   user.removeOldTokens();
   user.addToken(token);
   await user.save;
@@ -153,7 +157,7 @@ router.delete('/', auth.verifyToken, User.verify, async (req, res) => {
 });
 
 // get current user logged in
-router.put('/', auth.verifyToken, User.verify, async (req,res) => {
+router.get('/', auth.verifyToken, User.verify, async (req,res) => {
   return res.send(req.user);
 });
 

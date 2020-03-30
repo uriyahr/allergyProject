@@ -1,14 +1,15 @@
 <template>
   <div id="login">
-    <h2> Login </h2>
-    <form>
-      <fieldset>
-        <h2> Log In </h2>
-        <input v-model="username" type="text" placeholder="Username">
-        <input v-model="password" type="password" placeholder="Password">
-        <p v-if="error"> {{ error }} </p>
-      </fieldset>
-    </form>
+  <!-- <form @submit.prevent="login">
+    <fieldset> -->
+      <h2 v-if="true"> Log In </h2>
+      <input v-bind:class="{ error : error && username==''}" v-model="username" type="text" placeholder="Username">
+      <input v-bind:class="{ error : error && password==''}" v-model="password" type="password" placeholder="Password">
+      <p v-if="error"> {{ error }} </p>
+      <button @click="toggleLoginRegister">Register Option</button>
+      <button @click="login">Submit</button>
+    <!-- </fieldset>
+  </form> -->
   </div>
 </template>
 
@@ -18,14 +19,13 @@ export default {
   data () {
     return {
       username: '',
-      name: '',
+      password: '',
       error: ''
     }
   },
   methods: {
     async login () {
       try {
-        this.press();
         console.log('Logging In...');
         this.error = await this.$store.dispatch('login', {
           username: this.username,
@@ -65,7 +65,7 @@ export default {
     border: 1px solid #CCCCCC;
     background-color: #ffffff;
     margin: auto;
-    margin-top: 200px;
+    margin-top: 50px;
     padding: 20px;
   }
 </style>

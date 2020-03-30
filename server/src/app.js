@@ -21,18 +21,22 @@ mongoose.connect(uri,{
 const cookieParser = require('cookie-parser');
 app.use(cookieParser());
 
-const users = require('./usersRoutes');
-app.use("/users", users.routes);
-
-app.get('/',(req,res) => {
-  res.send('listening on port 8080')
+app.get("/", async (req, res) => {
+  res.send("IM RECIEVING YOU.");
 });
 
-app.listen(8080, () => {
-  console.debug('Server listening on 8080');
+app.get("/api", async (req, res) => {
+  res.send("IM RECIEVING YOU 2.");
+});
+
+const users = require('./usersRoutes.js');
+app.use("/api/users", users.routes);
+
+app.listen(3000, () => {
+  console.debug('Server listening on 3000');
 });
 
 // https.createServer({
 //   key: fs.readFileSync('server.key'),
 //   cert: fs.readFileSync('server.cert')
-// }),app.listen(8081, () => console.log('Server listening on port 8081'))
+// }),app.listen(8080, () => console.log('Server listening on port 8080'))
