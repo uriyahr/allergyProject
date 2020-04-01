@@ -1,7 +1,7 @@
 <template>
   <v-app id="inspire">
     <v-card color="grey lighten-4" flat height="5px" tile>
-      <v-toolbar>
+      <v-toolbar class="elevation-1">
         <v-toolbar-title id="nav-title" class="font-weight-regular"> allergy </v-toolbar-title>
         <v-spacer></v-spacer>
         <div id="rightNav">
@@ -9,6 +9,8 @@
         </div>
       </v-toolbar>
     </v-card>
+
+
     <!-- <v-content> -->
       <!-- <router-view></router-view>
     </v-content> -->
@@ -16,7 +18,6 @@
 </template>
 
 <script>
-
 export default {
   name: 'App',
   components: {
