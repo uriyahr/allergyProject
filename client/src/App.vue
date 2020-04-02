@@ -1,22 +1,14 @@
 <template>
   <v-app id="inspire">
-    <!-- <v-card color="transparent" flat height="0px"> -->
       <v-toolbar class="elevation-0" color="transparent" height="100px">
-        <!-- <v-btn text :ripple="false" id="nav-title" class="font-weight-regular" :to="'/'"> Allergy </v-btn> -->
         <button id="nav-title" @click="route('/')" :class="{ activeButton: onAllergy }"> Allergy </button>
         <v-spacer></v-spacer>
         <div id="rightNav">
-          <!-- <button :class="{activeButton : onSearch}"> Search</button> -->
           <button @click="route('/search')" :class="{ activeButton : onSearch }">  Search </button>
           <button @click="route('/signin')" :class="{ activeButton : onSignIn }"> Sign In</button>
           <button @click="route('/about')" :class="{ activeButton : onAbout }"> About</button>
-
-          <!-- <v-btn text small :ripple="false" id="nav-link" class="font-weight-regular" :to="'/search'"> Search </v-btn>
-          <v-btn text small :ripple="false" id="nav-link" class="font-weight-regular" :to="'/signin'"> Sign In </v-btn>
-          <v-btn text small :ripple="false" id="nav-link" class="font-weight-regular" :to="'/about'"> About </v-btn> -->
         </div>
       </v-toolbar>
-    <!-- </v-card> -->
       <router-view></router-view>
   </v-app>
 </template>
@@ -31,9 +23,7 @@ export default {
   }),
   methods: {
     route(path) {
-      if (this.$route.path != path) {
-        this.$router.push(path);
-      }
+      if (this.$route.path != path) { this.$router.push(path);}
     },
   },
   computed: {
@@ -41,10 +31,10 @@ export default {
     onSearch() { return this.$route.path == '/search'; },
     onSignIn() { return this.$route.path == '/signin'; },
     onAbout() { return this.$route.path == '/about'; }
-
   }
 };
 </script>
+
 <style scoped>
 @import url('https://fonts.googleapis.com/css?family=Trocchi&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Oswald&display=swap');
@@ -114,6 +104,4 @@ button:focus {
   -webkit-transform: scaleX(1);
   transform: scaleX(1);
 }
-
-
 </style>
