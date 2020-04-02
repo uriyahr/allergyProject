@@ -1,7 +1,7 @@
 <template>
   <v-app id="inspire">
-    <v-card color="grey lighten-4" flat height="6px" tile>
-      <v-toolbar class="elevation-0">
+    <!-- <v-card color="transparent" flat height="0px"> -->
+      <v-toolbar class="elevation-0" color="transparent" height="100px">
         <!-- <v-btn text :ripple="false" id="nav-title" class="font-weight-regular" :to="'/'"> Allergy </v-btn> -->
         <button id="nav-title" @click="route('/')" :class="{ activeButton: onAllergy }"> Allergy </button>
         <v-spacer></v-spacer>
@@ -16,7 +16,7 @@
           <v-btn text small :ripple="false" id="nav-link" class="font-weight-regular" :to="'/about'"> About </v-btn> -->
         </div>
       </v-toolbar>
-    </v-card>
+    <!-- </v-card> -->
       <router-view></router-view>
   </v-app>
 </template>
@@ -46,22 +46,20 @@ export default {
 };
 </script>
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=M+PLUS+1p&display=swap');
-@import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Judson:700&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Oswald&display=swap');
 #inspire{
   background-color: #d4f1e8;
 }
-.nav-toolbar {
-  background-color: white;
-}
+/* .nav-toolbar {
+  background-color: transparent !important;
+} */
 #nav-title {
-  background-color: white !important;
-  color: black;
-  font-size: 16px;
-  letter-spacing: 5px;
-  font-family: 'Playfair Display', serif;
-  text-transform: none !important;
+  font-family: 'Judson', serif;
+  text-transform: lowercase !important;
+  color:#18a499;
+  font-size: 45px;
+  letter-spacing: 1px;
   margin-left: 110px;
   border-radius: 0px;
   border-bottom: none;
@@ -69,15 +67,17 @@ export default {
 
 #rightNav {
   margin-right: 100px;
+  font-family: 'Oswald', sans-serif;
+
 }
 
 button {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 13px;
-  letter-spacing: 1px;
+  font-size: 15px;
+  letter-spacing: 3px;
+  text-transform: uppercase !important;
   border-bottom: 2px solid rgba(0, 0, 0, 0);
-  color: rgb(2, 2, 2);
-  margin: 9px;
+  color: #0b382c;
+  margin: 13px;
 }
 
 button.activeButton{
