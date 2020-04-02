@@ -46,20 +46,18 @@ export default {
 };
 </script>
 <style scoped>
-@import url('https://fonts.googleapis.com/css?family=Judson:700&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Trocchi&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Oswald&display=swap');
 #inspire{
   background-color: #d4f1e8;
 }
-/* .nav-toolbar {
-  background-color: transparent !important;
-} */
+
 #nav-title {
-  font-family: 'Judson', serif;
+  font-family: 'Trocchi', serif;
   text-transform: lowercase !important;
   color:#18a499;
-  font-size: 45px;
-  letter-spacing: 1px;
+  font-size: 40px;
+  letter-spacing: 0px;
   margin-left: 110px;
   border-radius: 0px;
   border-bottom: none;
@@ -68,24 +66,54 @@ export default {
 #rightNav {
   margin-right: 100px;
   font-family: 'Oswald', sans-serif;
-
 }
 
 button {
   font-size: 15px;
   letter-spacing: 3px;
   text-transform: uppercase !important;
-  border-bottom: 2px solid rgba(0, 0, 0, 0);
   color: #0b382c;
   margin: 13px;
-}
-
-button.activeButton{
-  border-bottom: 2px solid teal;
-  color: teal;
-
+  padding-bottom: 3px;
 }
 button:focus {
   outline: 0;
 }
+
+/* Navigation Bar Animation  */
+#rightNav > button {
+  position: relative;
+  color: #0b382c;
+  text-decoration: none;
+}
+
+#rightNav > button:before{
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  bottom: 0px;
+  left: 0;
+  background-color: #0b382c;
+  visibility: hidden;
+  -webkit-transform: scaleX(0);
+  transform: scaleX(0);
+  -webkit-transition: all 0.3s ease-in-out 0s;
+  transition: all 0.3s ease-in-out 0s;
+}
+
+#rightNav > button:hover:before{
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  bottom: 0px;
+  left: 0;
+  background-color:#0b382c;
+  visibility: visible;
+  -webkit-transform: scaleX(1);
+  transform: scaleX(1);
+}
+
+
 </style>
