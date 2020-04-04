@@ -72,8 +72,8 @@ userSchema.statics.verify = async function (req,res,next) {
 
 const User = mongoose.model('User', userSchema);
 
-// create a new user
-router.post('/', async (req,res) => {
+// register a new user
+router.post('/register', async (req,res) => {
   console.log('creating new user...');
   if (!req.body.username || !req.body.password) {
     return res.status(400).send({
@@ -87,7 +87,7 @@ router.post('/', async (req,res) => {
     });
     if (existsUser) {
       return res.status(403).send({
-        message: 'Username taken'
+        message: 'The username ' + req.body.username + ' is already taken.'
       });
     }
 
@@ -109,11 +109,13 @@ router.post('/', async (req,res) => {
 // login user
 router.post('/login', async (req, res) => {
   console.log(req.body);
-  if (!req.body.username || !req.body.password) {
+
+  if(!req.body.username || !req.body.password){
     return res.status(400).send({
-      message: 'username and password required'
+      message: 'The email address and password you’ve provided don’t match our records'
     });
   }
+
   try {
     // search user in db
     const existsUser = await User.findOne({
@@ -121,13 +123,13 @@ router.post('/login', async (req, res) => {
     });
     if(!existsUser) {
       return res.status(403).send({
-        message: 'the username or password is wrong'
+        message: req.body.username + " does not exist."
       });
     }
     // check password
     if (!await existsUser.comparePassword(req.body.password)) {
       return res.status(403).send({
-        message: 'the username or password is wrong'
+        message: 'Username or Password are not valid'
       });
     }
     login(existsUser,res);
