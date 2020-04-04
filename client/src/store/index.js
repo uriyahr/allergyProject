@@ -25,9 +25,17 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    toggleLoginRegister (context) {
+      try {
+        context.commit('setLoginOrRegister');
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
     async register (context, data) {
       try {
-        let response = await axios.post('/api/users/register', data);
+        let response = await axios.post('/api/users', data);
         context.commit('setUser', response.data);
         return "";
       } catch (error) {

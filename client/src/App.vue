@@ -9,9 +9,7 @@
           <button @click="route('/about')" :class="{ activeButton : onAbout }"> About</button>
         </div>
       </v-toolbar>
-      <v-content>
       <router-view></router-view>
-      </v-content>
   </v-app>
 </template>
 
@@ -48,7 +46,7 @@ export default {
   font-family: 'Trocchi', serif;
   text-transform: lowercase !important;
   color:#18a499;
-  font-size: 35px;
+  font-size: 40px;
   letter-spacing: 0px;
   margin-left: 110px;
   border-radius: 0px;

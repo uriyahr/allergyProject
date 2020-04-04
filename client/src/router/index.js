@@ -3,7 +3,6 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import SignIn from '../views/SignIn.vue'
 import Search from '../views/Search.vue'
-
 Vue.use(VueRouter)
 
 const routes = [

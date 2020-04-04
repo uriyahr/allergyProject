@@ -10,7 +10,3 @@
 - https://www.npmjs.com/package/nutritionix-api
 - https://developer.nutritionix.com
 
-- https://fdc.nal.usda.gov/api-key-signup.html
-- https://fdc.nal.usda.gov/fdc_api.html#/
-
-
