@@ -1,21 +1,17 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
-import EDAMAM_KEY from '../store/keys.js'
+// import EDAMAM_KEY from '../store/keys.js'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-
     user: null,
     deleted: false,
     loginOrRegister: -1,
     foodProducts: [],
-    foodAPI_URL: 'https://api.edamam.com/api/food-database/parser',
-    edamam_API: {
-
-    },
+    foodAPIUrl: 'https://api.edamam.com/api/food-database/parser',
   },
   mutations: {
     // food products mutations
@@ -38,19 +34,18 @@ export default new Vuex.Store({
   },
   actions: {
     // food products actions
-    async getFoodProducts( {state, commit}, query) {
+    async getFoodProducts( {state, commit}, plan) {
       try {
-        let response = await axios.get( '${state.foodAPI_URL}', {
+        let response = await axios.get( `${state.foodAPIUrl} `, {
           params: {
-            app_id: EDAMAM_KEY.app_id,
-            app_key: EDAMAM_KEY.app_key,
-            ingr: query,
-            upc: null,
+            app_id: '7aa348c9',
+            app_key: 'c2505f34243ee2421ade887930416685',
+            ingr: plan,
+            upc: '051000012517',
           }
         });
         commit('setFoodProducts', response.data.hits);
       }catch (err) {
-        console.error(err);
         commit('setFoodProducts',[] )
       }
     },

@@ -1,6 +1,6 @@
 <template>
   <div class="search">
-    <button @click="showFoodProducts('apple')"> food product </button>
+    <button @click="showFoodProducts('ramen')"> food product </button>
   </div>
 </template>
 <script>
@@ -12,8 +12,8 @@ export default {
     query: ""
   }),
   methods: {
-    showFoodProducts(query) {
-      this.$store.dispatch('getFoodProducts', query)
+    showFoodProducts(plan) {
+      this.$store.dispatch('getFoodProducts', plan)
     }
   }
 };
