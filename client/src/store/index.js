@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
-// import EDAMAM_KEY from '../store/keys.js'
+import EDAMAM_KEY from '../store/keys.js'
 
 Vue.use(Vuex)
 
@@ -38,8 +38,8 @@ export default new Vuex.Store({
       try {
         let response = await axios.get( `${state.foodAPIUrl} `, {
           params: {
-            app_id: '7aa348c9',
-            app_key: 'c2505f34243ee2421ade887930416685',
+            app_id: EDAMAM_KEY.app_id,
+            app_key: EDAMAM_KEY.app_key,
             ingr: plan,
             upc: '051000012517',
           }
