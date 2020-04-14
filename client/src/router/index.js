@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import SignIn from '../views/SignIn.vue'
-import Search from '../views/Search.vue'
+import Search from '../components/Search.vue'
 Vue.use(VueRouter)
 
 const routes = [

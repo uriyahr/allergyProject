@@ -1,52 +1,115 @@
 <template>
   <v-app id="inspire">
-      <v-toolbar class="elevation-0" color="transparent" height="100px">
-        <button id="nav-title" @click="route('/')" :class="{ activeButton: onAllergy }"> Allergy </button>
-        <v-spacer></v-spacer>
-        <div id="rightNav">
-          <button @click="route('/search')" :class="{ activeButton : onSearch }">  Search </button>
-          <button @click="route('/signin')" :class="{ activeButton : onSignIn }"> Sign In</button>
-          <button @click="route('/about')" :class="{ activeButton : onAbout }"> About</button>
-        </div>
-      </v-toolbar>
+    <v-app-bar id="app-bar" color="white" elevation="2" app>
+      <v-toolbar-title>
+        <button @click="route('/')" :class="{ activeButton: onAllergy }" id="nav-title">safe bite</button>
+      </v-toolbar-title>
+      <v-spacer></v-spacer>
+      <div id="rightNav">
+        <button @click="route('/search')" :class="{ activeButton : onSearch }">Search</button>
+        <button @click="route('/about')" :class="{ activeButton : onAbout }">About</button>
+        <button @click="route('/signin')" :class="{ activeButton : onSignIn }">Sign In</button>
+      </div>
+    </v-app-bar>
+
+    <v-content fluid>
+      <Search
+        source='https://jsonplaceholder.typicode.com/posts'
+        placeholder="Search for Food"
+        filter-key="title"
+        :start-at="2"
+      ></Search>
+
       <router-view></router-view>
+    </v-content>
   </v-app>
 </template>
 
 <script>
+import Search from '../src/components/Search.vue';
 export default {
-  name: 'App',
+  name: "App",
   components: {
+    Search
   },
   data: () => ({
-
+    series: [
+      {
+        id: 1,
+        title: "Game of Thrones",
+        body: "You know nothing, Jon Snow"
+      },
+      {
+        id: 2,
+        title: "Suits",
+        body: "You always have a choice"
+      },
+      {
+        id: 3,
+        title: "Dr House",
+        body: "If nobody hates you, you are doing something wrong"
+      },
+      {
+        id: 4,
+        title: "Breaking Bad",
+        body:
+          "Lorem Ipsum is simply dummy text of the printing and typesetting industry"
+      },
+      {
+        id: 5,
+        title: "Arrow",
+        body:
+          "Lorem Ipsum is simply dummy text of the printing and typesetting industry"
+      },
+      {
+        id: 6,
+        title: "Silicon Valley",
+        body:
+          "Lorem Ipsum is simply dummy text of the printing and typesetting industry"
+      }
+    ]
   }),
   methods: {
     route(path) {
-      if (this.$route.path != path) { this.$router.push(path);}
-    },
+      if (this.$route.path != path) {
+        this.$router.push(path);
+      }
+    }
   },
   computed: {
-    onAllergy() { return this.$route.path == '/'; },
-    onSearch() { return this.$route.path == '/search'; },
-    onSignIn() { return this.$route.path == '/signin'; },
-    onAbout() { return this.$route.path == '/about'; }
+    onAllergy() {
+      return this.$route.path == "/";
+    },
+    onSearch() {
+      return this.$route.path == "/search";
+    },
+    onSignIn() {
+      return this.$route.path == "/signin";
+    },
+    onAbout() {
+      return this.$route.path == "/about";
+    }
   }
 };
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css?family=Trocchi&display=swap');
-@import url('https://fonts.googleapis.com/css?family=Oswald&display=swap');
-#inspire{
-  background-color: #d4f1e8;
+@import url("https://fonts.googleapis.com/css?family=Trocchi&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Oswald&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Old+Standard+TT:400,400i,700&display=swap");
+#inspire {
+  background-color: white;
+}
+#app-bar {
+  position: fixed;
 }
 
 #nav-title {
-  font-family: 'Trocchi', serif;
+  font-family: "Old Standard TT", serif;
+  font-weight: bold;
   text-transform: lowercase !important;
-  color:#18a499;
-  font-size: 40px;
+  color: black;
+  font-size: 28px;
   letter-spacing: 0px;
   margin-left: 110px;
   border-radius: 0px;
@@ -55,14 +118,14 @@ export default {
 
 #rightNav {
   margin-right: 100px;
-  font-family: 'Oswald', sans-serif;
+  font-family: "Old Standard TT", serif;
 }
 
 button {
-  font-size: 15px;
+  font-size: 13px;
   letter-spacing: 3px;
-  text-transform: uppercase !important;
-  color: #0b382c;
+  text-transform: none !important;
+  color: black;
   margin: 13px;
   padding-bottom: 3px;
 }
@@ -77,7 +140,7 @@ button:focus {
   text-decoration: none;
 }
 
-#rightNav > button:before{
+#rightNav > button:before {
   content: "";
   position: absolute;
   width: 100%;
@@ -92,14 +155,14 @@ button:focus {
   transition: all 0.3s ease-in-out 0s;
 }
 
-#rightNav > button:hover:before{
+#rightNav > button:hover:before {
   content: "";
   position: absolute;
   width: 100%;
   height: 2px;
   bottom: 0px;
   left: 0;
-  background-color:#0b382c;
+  background-color: #0b382c;
   visibility: visible;
   -webkit-transform: scaleX(1);
   transform: scaleX(1);
