@@ -1,16 +1,28 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
+import EDAMAM_KEY from '../store/keys.js'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+
     user: null,
     deleted: false,
     loginOrRegister: -1,
+    foodProducts: [],
+    foodAPI_URL: 'https://api.edamam.com/api/food-database/parser',
+    edamam_API: {
+
+    },
   },
   mutations: {
+    // food products mutations
+    setFoodProducts(state, payload) {
+      state.foodProducts = payload;
+    },
+    // user mutations
     setUser (state, user) {
       state.user = user;
     },
@@ -25,6 +37,24 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    // food products actions
+    async getFoodProducts( {state, commit}, query) {
+      try {
+        let response = await axios.get( '${state.foodAPI_URL}', {
+          params: {
+            app_id: EDAMAM_KEY.app_id,
+            app_key: EDAMAM_KEY.app_key,
+            ingr: query,
+            upc: null,
+          }
+        });
+        commit('setFoodProducts', response.data.hits);
+      }catch (err) {
+        console.error(err);
+        commit('setFoodProducts',[] )
+      }
+    },
+    // user actions
     toggleLoginRegister (context) {
       try {
         context.commit('setLoginOrRegister');

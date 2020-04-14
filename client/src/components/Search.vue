@@ -1,10 +1,9 @@
 <template>
   <div class="search">
-    <button> vegan plan </button>
+    <button @click="showFoodProducts('apple')"> food product </button>
   </div>
 </template>
 <script>
-import axios from 'axios'
 export default {
   name: "Search",
 
@@ -13,24 +12,8 @@ export default {
     query: ""
   }),
   methods: {
-    showData(query) {
-      axios
-        .get("https://api.edamam.com/search", {
-          params: {
-            q: query,
-            app_id: "5630becb",
-            app_key: "6ba6d7b0dc9ce09a0fc68a0b05d3c4cf",
-            from: 0,
-            to: 9
-          }
-        })
-        .then(response => {
-          response = response.data;
-          this.items = response.hits;
-        })
-        .catch(() => {
-          this.items = [];
-        });
+    showFoodProducts(query) {
+      this.$store.dispatch('getFoodProducts', query)
     }
   }
 };

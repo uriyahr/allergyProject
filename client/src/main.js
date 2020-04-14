@@ -5,7 +5,6 @@ import store from './store'
 import vuetify from './plugins/vuetify';
 import axios from 'axios'
 
-axios.defaults.baseURL = 'https://api.edamam.com/search'
 Vue.config.productionTip = false
 
 new Vue({

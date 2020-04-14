@@ -29,9 +29,9 @@ mongoose.connect(uri,{
 // const cookieParser = require('cookie-parser');
 // app.use(cookieParser());
 
-// app.get("/", async (req, res) => {
-//   res.send("IM RECIEVING YOU.");
-// });
+app.get("/", async (req, res) => {
+  res.send("IM RECIEVING YOU.");
+});
 
 // app.get("/api", async (req, res) => {
 //   res.send("IM RECIEVING YOU 2.");
