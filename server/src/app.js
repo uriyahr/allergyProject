@@ -14,7 +14,6 @@ app.use(bodyParser.urlencoded({
    extended : false
 }));
 
-
 const mongoose = require('mongoose');
 const uri = 'mongodb+srv://uriann:stanford@allrgcluster-xc2dx.mongodb.net/test?retryWrites=true&w=majority';
 mongoose.connect(uri,{

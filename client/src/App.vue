@@ -13,13 +13,13 @@
     </v-app-bar>
 
     <v-content fluid>
-      <Search
+      <!-- <Search
         source='https://jsonplaceholder.typicode.com/posts'
         placeholder="Search for Food"
         filter-key="title"
         :start-at="2"
-      ></Search>
-
+      ></Search> -->
+      <Search></Search>
       <router-view></router-view>
     </v-content>
   </v-app>
@@ -33,41 +33,6 @@ export default {
     Search
   },
   data: () => ({
-    series: [
-      {
-        id: 1,
-        title: "Game of Thrones",
-        body: "You know nothing, Jon Snow"
-      },
-      {
-        id: 2,
-        title: "Suits",
-        body: "You always have a choice"
-      },
-      {
-        id: 3,
-        title: "Dr House",
-        body: "If nobody hates you, you are doing something wrong"
-      },
-      {
-        id: 4,
-        title: "Breaking Bad",
-        body:
-          "Lorem Ipsum is simply dummy text of the printing and typesetting industry"
-      },
-      {
-        id: 5,
-        title: "Arrow",
-        body:
-          "Lorem Ipsum is simply dummy text of the printing and typesetting industry"
-      },
-      {
-        id: 6,
-        title: "Silicon Valley",
-        body:
-          "Lorem Ipsum is simply dummy text of the printing and typesetting industry"
-      }
-    ]
   }),
   methods: {
     route(path) {
