@@ -19,18 +19,17 @@
         filter-key="title"
         :start-at="2"
       ></Search> -->
-      <Search></Search>
       <router-view></router-view>
     </v-content>
   </v-app>
 </template>
 
 <script>
-import Search from '../src/components/Search.vue';
+// import Search from '../src/components/Search.vue';
 export default {
   name: "App",
   components: {
-    Search
+    // Search
   },
   data: () => ({
   }),

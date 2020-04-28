@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
-import EDAMAM_KEY from '../store/keys.js'
 
 Vue.use(Vuex)
 
@@ -10,14 +9,18 @@ export default new Vuex.Store({
     user: null,
     deleted: false,
     loginOrRegister: -1,
-    foodProducts: [],
-    foodAPIUrl: 'https://api.edamam.com/api/food-database/parser',
+    product: null,
+    products: []
   },
   mutations: {
     // food products mutations
-    setFoodProducts(state, payload) {
-      state.foodProducts = payload;
+    setProduct(state,product){
+      state.product = product;
     },
+    setProducts(state,products){
+      state.products = products;
+    },
+
     // user mutations
     setUser (state, user) {
       state.user = user;
@@ -34,21 +37,26 @@ export default new Vuex.Store({
   },
   actions: {
     // food products actions
-    async getFoodProducts( {state, commit}, plan) {
+    async getProducts(context){
       try {
-        let response = await axios.get( `${state.foodAPIUrl} `, {
-          params: {
-            app_id: EDAMAM_KEY.app_id,
-            app_key: EDAMAM_KEY.app_key,
-            ingr: plan,
-            upc: '051000012517',
-          }
-        });
-        commit('setFoodProducts', response.data.hits);
-      }catch (err) {
-        commit('setFoodProducts',[] )
+        console.log('getting products from store');
+        let response = await axios.get("/api/product");
+        context.commit('setProducts', response.data);
+      } catch (error) {
+        console.log('breaking here');
+        console.log(error);
       }
     },
+
+    async getProduct(context, payload) {
+      try {
+        let response = await axios.get("/api/product/" + payload._id);
+        context.commit('setProduct', response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
     // user actions
     toggleLoginRegister (context) {
       try {
@@ -93,7 +101,8 @@ export default new Vuex.Store({
       } catch (error) {
         return "";
       }
-    }
+    },
+
   },
   modules: {
   }
