@@ -11,25 +11,25 @@ const client = new MongoClient(uri, {
 }, {
   useUnifiedTopology: true
 });
-// client.connect(err => {
-//   const collection = client.db("allrgDB").collection("test_branded_food");
-//   collection.find().forEach(async function(document){
-//     let currentUPC = document.gtin_upc;
-//     // console.log('currentUPC',currentUPC);
-//     let newData = await getProductByUPC(currentUPC);
-//     // console.log('newData',newData);
-//     await collection.updateOne(
-//       {gtin_upc: currentUPC},
-//       {$set: {
-//         "product_name": newData.product_name,
-//         "description": newData.description,
-//         "images": newData.images,
-//         "stores": newData.stores
-//       }}
-//     );
-//   });
-//   client.close();
-// });
+client.connect(err => {
+  const collection = client.db("allrgDB").collection("test_branded_food");
+  collection.find().forEach(async function(document){
+    let currentUPC = document.gtin_upc;
+    // console.log('currentUPC',currentUPC);
+    let newData = await getProductByUPC(currentUPC);
+    // console.log('newData',newData);
+    await collection.updateOne(
+      {gtin_upc: currentUPC},
+      {$set: {
+        "product_name": newData.product_name,
+        "description": newData.description,
+        "images": newData.images,
+        "stores": newData.stores
+      }}
+    );
+  });
+  client.close();
+});
 
 async function checkRateLimitUPC(){
   try {
