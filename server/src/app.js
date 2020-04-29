@@ -3,8 +3,6 @@ const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const cors = require('cors');
 const axios = require('axios');
-const EDAMAM_KEY = require('../../client/src/store/keys');
-
 //const fs = require('fs');
 //const https = require('https');
 
@@ -18,7 +16,7 @@ app.use(bodyParser.urlencoded({
 }));
 
 const mongoose = require('mongoose');
-const uri = 'mongodb+srv://uriann:stanford@allrgcluster-xc2dx.mongodb.net/allrgDB?retryWrites=true&w=majority';
+const uri = 'mongodb+srv://uriann:Evergreen@allrgcluster-xc2dx.mongodb.net/allrgDB?retryWrites=true&w=majority';
 mongoose.connect(uri,{
   useNewUrlParser: true ,
   useUnifiedTopology: true
@@ -49,8 +47,6 @@ app.use('/api/product', product.routes);
 app.listen(3000, () => {
   console.debug('Server listening on 3000');
 });
-
-
 
 // https.createServer({
 //   key: fs.readFileSync('server.key'),

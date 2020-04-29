@@ -3,7 +3,6 @@ const express = require('express');
 const router = express.Router();
 const axios = require('axios');
 
-
 const MongoClient = require('mongodb').MongoClient;
 const uri = "mongodb+srv://uriann:stanford@allrgcluster-xc2dx.mongodb.net/allrgDB?retryWrites=true&w=majority";
 const client = new MongoClient(uri, {
@@ -11,74 +10,27 @@ const client = new MongoClient(uri, {
 }, {
   useUnifiedTopology: true
 });
-client.connect(err => {
-  const collection = client.db("allrgDB").collection("test_branded_food");
-  collection.find().forEach(async function(document){
-    let currentUPC = document.gtin_upc;
-    // console.log('currentUPC',currentUPC);
-    let newData = await getProductByUPC(currentUPC);
-    // console.log('newData',newData);
-    await collection.updateOne(
-      {gtin_upc: currentUPC},
-      {$set: {
-        "product_name": newData.product_name,
-        "description": newData.description,
-        "images": newData.images,
-        "stores": newData.stores
-      }}
-    );
-  });
-  client.close();
-});
 
-async function checkRateLimitUPC(){
-  try {
-    let response = await axios.get('https://api.barcodelookup.com/v2/rate-limits?key=m84lgzijx9jmie4ve8ycega3cqnx1a');
-    console.log(response.data);
-  } catch (error) {
-    console.log('error',error);
-  }
-}
-
-checkRateLimitUPC();
-async function getProductByUPC(upc) {
-  try {
-    let response = await axios.get('https://api.barcodelookup.com/v2/products?barcode=' + upc + '&formatted=y&key=m84lgzijx9jmie4ve8ycega3cqnx1a');
-    console.log('response data', response.data);
-    let product_name = await response.data.products[0].product_name,
-        description = await response.data.products[0].description,
-        images = await response.data.products[0].images,
-        stores = await response.data.products[0].stores;
-    console.log('product_name: ', product_name);
-    let newData =  {
-      "product_name": product_name,
-      "description": description,
-      "images": images,
-      "stores": stores,
-    };
-    console.log('newData Obj', newData);
-    return newData;
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-
-async function testing(testDoc, collection) {
-  try {
-    let currentUPC = testDoc.gtin_upc;
-    console.log(currentUPC);
-    let newData = await getProductByUPC(currentUPC);
-    await collection.updateOne(
-      {gtin_upc: currentUPC},
-      {'$set': {'new': 0}}
-    );
-  } catch (error) {
-    console.log(error);
-  }
-
-}
-
+// altering existing product data
+// client.connect(err => {
+//   const collection = client.db("allrgDB").collection("test_branded_food");
+//   collection.find().forEach(async function(document){
+//     let currentUPC = document.gtin_upc;
+//     // console.log('currentUPC',currentUPC);
+//     let newData = await getProductByUPC(currentUPC);
+//     // console.log('newData',newData);
+//     await collection.updateOne(
+//       {gtin_upc: currentUPC},
+//       {$set: {
+//         "product_name": newData.product_name,
+//         "description": newData.description,
+//         "images": newData.images,
+//         "stores": newData.stores
+//       }}
+//     );
+//   });
+//   client.close();
+// });
 
 const productSchema = new mongoose.Schema({
   "_id": Number,
@@ -119,7 +71,6 @@ const testProduct = mongoose.model('testProduct', testProductSchema, 'test_brand
 router.get("/", async (req, res) => {
   try {
     let products = await Product.find().limit(30);
-
     console.log(products);
     return res.send(products);
   } catch (error) {
@@ -140,21 +91,6 @@ router.get('/:_id', async (req, res) => {
     return res.sendStatus(500);
   }
 });
-
-// async function updateAllDocs(){
-//   try {
-//     await Product.find().snapshot().forEach(function () {
-//         Product.update(
-//           {},
-//           {},
-//         )
-//     });
-//   } catch (error) {
-//     console.log(error);
-//   }
-// }
-
-var ObjectId = new mongoose.Types.ObjectId;
 
 async function testUpdateOne() {
   try {
@@ -182,9 +118,53 @@ async function testUpdateOne() {
     console.log(error);
   }
 }
+async function checkRateLimitUPC() {
+  try {
+    let response = await axios.get('https://api.barcodelookup.com/v2/rate-limits?key=m84lgzijx9jmie4ve8ycega3cqnx1a');
+    console.log(response.data);
+  } catch (error) {
+    console.log('error', error);
+  }
+}
 
+async function getProductByUPC(upc) {
+  try {
+    let response = await axios.get('https://api.barcodelookup.com/v2/products?barcode=' + upc + '&formatted=y&key=m84lgzijx9jmie4ve8ycega3cqnx1a');
+    console.log('response data', response.data);
+    let product_name = await response.data.products[0].product_name,
+      description = await response.data.products[0].description,
+      images = await response.data.products[0].images,
+      stores = await response.data.products[0].stores;
+    console.log('product_name: ', product_name);
+    let newData = {
+      "product_name": product_name,
+      "description": description,
+      "images": images,
+      "stores": stores,
+    };
+    console.log('newData Obj', newData);
+    return newData;
+  } catch (error) {
+    console.log(error);
+  }
+}
 
-
+async function testing(testDoc, collection) {
+  try {
+    let currentUPC = testDoc.gtin_upc;
+    console.log(currentUPC);
+    let newData = await getProductByUPC(currentUPC);
+    await collection.updateOne({
+      gtin_upc: currentUPC
+    }, {
+      '$set': {
+        'new': 0
+      }
+    });
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 module.exports = {
   model: Product,
