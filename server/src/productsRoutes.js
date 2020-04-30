@@ -123,54 +123,55 @@ async function R_PRODUCTS(cli) {
       collection.find().forEach(async function (document) {
         let ingredients = await document.ingredients;
         // Milk Free:
-        let milk_regex = /(\b(?:plain|mode|)\b)/gis;
+        let milk_regex = /(\b(?:Milk|Butter|butter fat|butter oil|butter acid|Buttermilk|Casein|Casein hydrolysate|Caseinates|Cheese|Cottage cheese|Cream|Curd|Custard|Diacetyl|Ghee|Half-and-half|Lactalbumin|lactalbumin phosphate|Lactoferrin|Lactose|Lactulose|milkfat|Milk protein hydrolysate|Pudding|Recaldent|Rennet casein|Sour cream|sour cream solids|Sour milk solids|Tagatose|Whey|Whey protein hydrolysate|Yogurt|Margarine||)\b)/gis;
         let contains_milk = milk_regex.test(ingredients);
         if (contains_milk) {
           // add contains_milk field to document
         }
+        // https://www.foodallergy.org/living-food-allergies/food-allergy-essentials/common-allergens
         // Egg Free:
-        let egg_regex = /(\b(?:plain|mode|)\b)/gis;
+        let egg_regex = /(\b(?:Albumin|albumen|Egg|yolk|Eggnog|Lysozyme|Mayonnaise|Meringue|meringue powder|Ovalbumin|Surimi|Nougat|Marzipan)\b)/gis;
         let contains_egg = egg_regex.test(ingredients);
         if (contains_egg) {
 
         }
 
         // Tree Nut Free:
-        let treenut_regex = /(\b(?:plain|mode|)\b)/gis;
+        let treenut_regex = /(\b(?:treenut|tree nut|Almond|Artificial nuts|Beechnut|Black walnut hull extract|Brazil nut|Cashew|Chestnut|Chinquapin nut|Filbert|hazelnut|Gianduja|Ginkgo|butternut|beechnuts|chinquapins|gingko|lychee nut|lichee nut|Litchi nut|Macadamia nut|almond paste|Marzipan|Nangai nut|Nut butter|Nut meat|Nut meal|Nut milk|Nut oils|walnut oil|almond oil|almond paste|Nut paste|Nut pieces|Pecan|Pili nut|pignoli|pigñolia|pignon|pignon|pinyon|Pistachio|Praline|Shea nut|Walnut|Argan oil|Marzipan|)\b)/gis;
         let contains_treenut = treenut_regex.test(ingredients);
         if (contains_egg) {
 
         }
         // Peanut Free:
-        let peanut_regex = /(\b(?:plain|mode|)\b)/gis;
+        let peanut_regex = /(\b(?:Arachis oil|peanut oil|Artificial nuts|Beer nuts|Goobers|Ground nuts|Lupin|lupine|Mandelonas|Mixed nuts|Monkey nuts|Nut meat|Nut pieces|Peanut butter|Peanut flour|Peanut protein hydrolysate|Peanut|Nut)\b)/gis;
         let contains_peanut = peanut_regex.test(ingredients);
         if (contains_peanut) {
 
         }
 
         // Shellfish:
-        let shellfish_regex = /(\b(?:plain|mode|)\b)/gis;
+        let shellfish_regex = /(\b(?:Barnacle|Crab|Crawfish|crawdad|crayfish|ecrevisse|Krill|Lobster|langouste|langoustine|Moreton bay bugs|scampi|tomalley|Prawn|Shrimp|crevette|scampi|mollusks|Abalone|Clam|cherrystone|geoduck|littleneck|quahog|Cockle|Cuttlefish|Limpet|lapas|opihi|Mussels|Octopus|Oysters|Periwinkle|Sea cucumber|Sea urchin|Scallops|Snails|escargot|Squid|calamari|Whelk|Turban shell|clam extract|Surimi|Fish stock|Glucosamine|Cuttlefish|Bouillabaisse|)\b)/gis;
         let contains_shellfish = shellfish_regex.test(ingredients);
         if (contains_shellfish) {
 
         }
 
         // Wheat:
-        let wheat_regex = /(\b(?:plain|mode|)\b)/gis;
+        let wheat_regex = /(\b(?:wheat|Bread crumbs|Bulgur|Cereal extract|Club wheat|Couscous|Cracker meal|Durum|Einkorn|Emmer|Farina|Farro|Flour|Freekeh|Hydrolyzed wheat protein|Kamut|Matzoh|matzo|matzah|matza|Seitan|Semolina|Spelt|Sprouted wheat|Triticale|Vital wheat gluten|Wheat bran hydrolysate|Wheat germ oil|Wheat grass|Wheat protein isolate|Whole wheat berries)\b)/gis;
         let contains_wheat = wheat_regex.test(ingredients);
         if (contains_wheat) {
 
         }
 
         // Soy:
-        let soy_regex = /(\b(?:plain|mode|)\b)/gis;
+        let soy_regex = /(\b(?:soy|soy oil|Edamame|Miso|Natto|Shoyu|Soya|Soybean|Soy protein|Soy sauce|Tamari|Tempeh|TVP|Textured vegetable protein|Tofu)\b)/gis;
         let contains_soy = soy_regex.test(ingredients);
         if (contains_soy) {
 
         }
 
         // Fish:
-        let fish_regex = /(\b(?:plain|mode|)\b)/gis;
+        let fish_regex = /(\b(?:Anchovie|Anchovies|Bass|Catfish|Cod|Flounder|Grouper|Haddock|Hake|Halibut|Herring|Mahi mahi|Perch|Pike|Pollock|Salmon|Scrod|Sole|Snapper|Swordfish|Tilapia|Trout|Tuna|Fish gelatin|Fish oil|Fish sticks|Worcestershire|Bouillabaisse|Caesar)\b)/gis;
         let contains_fish = fish_regex.test(ingredients);
         if (contains_fish) {
 
