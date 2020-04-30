@@ -10,7 +10,9 @@ export default new Vuex.Store({
     deleted: false,
     loginOrRegister: -1,
     product: null,
-    products: []
+    products: [],
+    DP_Filters: [],
+    R_Filters: []
   },
   mutations: {
     // food products mutations
@@ -20,7 +22,12 @@ export default new Vuex.Store({
     setProducts(state,products){
       state.products = products;
     },
-
+    setDP_Filters(state,DP_Filters){
+      state.DP_Filters = DP_Filters;
+    },
+    setR_Filters(state,R_Filters){
+      state.R_Filters = R_Filters;
+    },
     // user mutations
     setUser (state, user) {
       state.user = user;
@@ -52,6 +59,30 @@ export default new Vuex.Store({
       try {
         let response = await axios.get("/api/product/" + payload._id);
         context.commit('setProduct', response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    // product filter actions
+    async filterByDP(context, payload) {
+      try {
+
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async getDPProducts(context, payload) {
+      try {
+        let response = await axios.get("/api/product/DPfilter/" + payload._id);
+        context.commit('setDP_Filters', response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async getRProducts(context, payload) {
+      try {
+        let response = await axios.get('/api/product/RFilter/' + payload._id);
+        context.commit('setR_Filters', response.data);
       } catch (error) {
         console.log(error);
       }

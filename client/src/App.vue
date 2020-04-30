@@ -13,23 +13,15 @@
     </v-app-bar>
 
     <v-content fluid>
-      <!-- <Search
-        source='https://jsonplaceholder.typicode.com/posts'
-        placeholder="Search for Food"
-        filter-key="title"
-        :start-at="2"
-      ></Search> -->
       <router-view></router-view>
     </v-content>
   </v-app>
 </template>
 
 <script>
-// import Search from '../src/components/Search.vue';
 export default {
   name: "App",
   components: {
-    // Search
   },
   data: () => ({
   }),

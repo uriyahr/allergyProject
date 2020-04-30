@@ -4,7 +4,7 @@ const router = express.Router();
 const axios = require('axios');
 
 const MongoClient = require('mongodb').MongoClient;
-const uri = "mongodb+srv://uriann:stanford@allrgcluster-xc2dx.mongodb.net/allrgDB?retryWrites=true&w=majority";
+const uri = "mongodb+srv://uriann:Evergreen@allrgcluster-xc2dx.mongodb.net/allrgDB?retryWrites=true&w=majority";
 const client = new MongoClient(uri, {
   useNewUrlParser: true
 }, {
@@ -91,7 +91,122 @@ router.get('/:_id', async (req, res) => {
     return res.sendStatus(500);
   }
 });
+router.get('/DPFilter/:_id', async (req, res) => {
+  try {
+    let query = {};
+    let filteredProducts = await Product.find(query).limit(30);
+    console.log(filteredProducts);
+    return res.send(filteredProducts);
+  } catch (error) {
+    console.log(error);
+    return res.sendStatus(500);
+  }
+});
 
+router.get('/RFilter/:_id', async (req, res) => {
+  try {
+    let query = {};
+    let filteredProducts = await Product.find(query).limit(30);
+    console.log(filteredProducts);
+    return res.send(filteredProducts);
+  } catch (error) {
+    console.log(error);
+    return res.sendStatus(500);
+  }
+});
+
+async function R_PRODUCTS(cli) {
+  try {
+    console.log('R_PRODUCTS function');
+    client.connect(err => {
+      const collection = client.db("allrgDB").collection("test_branded_food");
+      collection.find().forEach(async function (document) {
+        let ingredients = await document.ingredients;
+        // Milk Free:
+        let milk_regex = /(\b(?:plain|mode|)\b)/gis;
+        let contains_milk = milk_regex.test(ingredients);
+        if (contains_milk) {
+          // add contains_milk field to document
+        }
+        // Egg Free:
+        let egg_regex = /(\b(?:plain|mode|)\b)/gis;
+        let contains_egg = egg_regex.test(ingredients);
+        if (contains_egg) {
+
+        }
+
+        // Tree Nut Free:
+        let treenut_regex = /(\b(?:plain|mode|)\b)/gis;
+        let contains_treenut = treenut_regex.test(ingredients);
+        if (contains_egg) {
+
+        }
+        // Peanut Free:
+        let peanut_regex = /(\b(?:plain|mode|)\b)/gis;
+        let contains_peanut = peanut_regex.test(ingredients);
+        if (contains_peanut) {
+
+        }
+
+        // Shellfish:
+        let shellfish_regex = /(\b(?:plain|mode|)\b)/gis;
+        let contains_shellfish = shellfish_regex.test(ingredients);
+        if (contains_shellfish) {
+
+        }
+
+        // Wheat:
+        let wheat_regex = /(\b(?:plain|mode|)\b)/gis;
+        let contains_wheat = wheat_regex.test(ingredients);
+        if (contains_wheat) {
+
+        }
+
+        // Soy:
+        let soy_regex = /(\b(?:plain|mode|)\b)/gis;
+        let contains_soy = soy_regex.test(ingredients);
+        if (contains_soy) {
+
+        }
+
+        // Fish:
+        let fish_regex = /(\b(?:plain|mode|)\b)/gis;
+        let contains_fish = fish_regex.test(ingredients);
+        if (contains_fish) {
+
+        }
+
+      });
+      client.close();
+    });
+
+  } catch (error) {
+    console.log(error);
+  }
+}
+// R_PRODUCTS(client);
+
+function regexTest() {
+  try {
+    let expression = /(\b(?:plain|mode)\b)/gis;
+    let string =  'PASTEURIZED MILK, CHEESE CULTURE, SALT, ENZYMES, ANNATTO (COLOR).';
+    console.log(expression.test(string)); // false
+  } catch (error) {
+    console.log(error);
+  }
+}
+regexTest();
+async function DP_PRODUCTS() {
+  try {
+    // attribute to vegan
+
+    // attribute to vegetarian
+
+
+  } catch (error) {
+    console.log(error);
+  }
+}
 async function testUpdateOne() {
   try {
     await Product.find({
@@ -103,7 +218,6 @@ async function testUpdateOne() {
           _id: 0,
           fdc_id: 1
         });
-        console.log('------------------------------------------------------------')
         console.log('currentUPC', currentUPC);
         let newData = getProductByUPC(currentUPC);
         console.log('new data from getPRodUPC', newData);
@@ -111,7 +225,6 @@ async function testUpdateOne() {
           $set: newData
         });
         console.log(document);
-        console.log('------------------------------------------------------------')
 
       });
   } catch (error) {
