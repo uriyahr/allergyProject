@@ -115,95 +115,217 @@ router.get('/RFilter/:_id', async (req, res) => {
   }
 });
 
-async function R_PRODUCTS(cli) {
+async function R_PRODUCTS_DOCS(cli) {
   try {
     console.log('R_PRODUCTS function');
     client.connect(err => {
       const collection = client.db("allrgDB").collection("test_branded_food");
       collection.find().forEach(async function (document) {
         let ingredients = await document.ingredients;
-        // Milk Free:
-        let milk_regex = /(\b(?:Milk|Butter|butter fat|butter oil|butter acid|Buttermilk|Casein|Casein hydrolysate|Caseinates|Cheese|Cottage cheese|Cream|Curd|Custard|Diacetyl|Ghee|Half-and-half|Lactalbumin|lactalbumin phosphate|Lactoferrin|Lactose|Lactulose|milkfat|Milk protein hydrolysate|Pudding|Recaldent|Rennet casein|Sour cream|sour cream solids|Sour milk solids|Tagatose|Whey|Whey protein hydrolysate|Yogurt|Margarine||)\b)/gis;
-        let contains_milk = milk_regex.test(ingredients);
-        if (contains_milk) {
-          // add contains_milk field to document
-        }
+        let currentUPC = await document.gtin_upc;
+
         // https://www.foodallergy.org/living-food-allergies/food-allergy-essentials/common-allergens
+        // Milk Free:
+        let milk_regex = /(\b(?:Milk|Butter|butter fat|butter oil|butter acid|Buttermilk|Casein|Casein hydrolysate|Caseinates|Cheese|Cottage cheese|Cream|Curd|Custard|Diacetyl|Ghee|Half-and-half|Lactalbumin|lactalbumin phosphate|Lactoferrin|Lactose|Lactulose|milkfat|Milk protein hydrolysate|Pudding|Recaldent|Rennet casein|Sour cream|sour cream solids|Sour milk solids|Tagatose|Whey|Whey protein hydrolysate|Yogurt)\b)/gis;
+        let contains_milk = milk_regex.test(ingredients);
+        // add contains_milk field to document
+        await collection.updateOne({
+          gtin_upc: currentUPC
+        }, {
+          $set: {
+            'contains_milk': contains_milk
+          }
+        });
+
         // Egg Free:
-        let egg_regex = /(\b(?:Albumin|albumen|Egg|yolk|Eggnog|Lysozyme|Mayonnaise|Meringue|meringue powder|Ovalbumin|Surimi|Nougat|Marzipan)\b)/gis;
+        let egg_regex = /(\b(?:Albumin|albumen|Egg|eggs|yolk|Eggnog|Lysozyme|Mayonnaise|Meringue|meringue powder|Ovalbumin|Surimi|Nougat|Marzipan)\b)/gis;
         let contains_egg = egg_regex.test(ingredients);
-        if (contains_egg) {
+        await collection.updateOne({
+          gtin_upc: currentUPC
+        }, {
+          $set: {
+            'contains_egg': contains_egg
+          }
+        });
 
-        }
-
-        // Tree Nut Free:
-        let treenut_regex = /(\b(?:treenut|tree nut|Almond|Artificial nuts|Beechnut|Black walnut hull extract|Brazil nut|Cashew|Chestnut|Chinquapin nut|Filbert|hazelnut|Gianduja|Ginkgo|butternut|beechnuts|chinquapins|gingko|lychee nut|lichee nut|Litchi nut|Macadamia nut|almond paste|Marzipan|Nangai nut|Nut butter|Nut meat|Nut meal|Nut milk|Nut oils|walnut oil|almond oil|almond paste|Nut paste|Nut pieces|Pecan|Pili nut|pignoli|pigñolia|pignon|pignon|pinyon|Pistachio|Praline|Shea nut|Walnut|Argan oil|Marzipan|)\b)/gis;
+        // // Tree Nut Free:
+        let treenut_regex = /(\b(?:treenut|tree nuts|treenuts|tree nut|Almond|almonds|Artificial nuts|Beechnut|Black walnut hull extract|Brazil nut|Cashew|cashews|chestnuts|Chestnut|Chinquapin nut|Filbert|hazelnut|hazelnuts|Gianduja|Ginkgo|butternut|beechnuts|chinquapins|gingko|lychee nut|lichee nut|Litchi nut|Macadamia nut|almond paste|Marzipan|Nangai nut|Nut butter|Nut meat|Nut meal|Nut milk|Nut oils|walnut oil|almond oil|almond paste|Nut paste|Nut pieces|Pecan|Pili nut|pignoli|pigñolia|pignon|pignon|pinyon|Pistachio|Praline|Shea nut|Walnut|Argan oil|Marzipan)\b)/gis;
         let contains_treenut = treenut_regex.test(ingredients);
-        if (contains_egg) {
+        await collection.updateOne({
+          gtin_upc: currentUPC
+        }, {
+          $set: {
+            'contains_treenut': contains_treenut
+          }
+        });
 
-        }
         // Peanut Free:
-        let peanut_regex = /(\b(?:Arachis oil|peanut oil|Artificial nuts|Beer nuts|Goobers|Ground nuts|Lupin|lupine|Mandelonas|Mixed nuts|Monkey nuts|Nut meat|Nut pieces|Peanut butter|Peanut flour|Peanut protein hydrolysate|Peanut|Nut)\b)/gis;
+        let peanut_regex = /(\b(?:Arachis oil|peanut|peanuts|peanut oil|Artificial nuts|Beer nuts|Goobers|Ground nuts|Lupin|lupine|Mandelonas|Mixed nuts|Monkey nuts|Nut meat|Nut pieces|Peanut butter|Peanut flour|Peanut protein hydrolysate|Peanut|Nut)\b)/gis;
         let contains_peanut = peanut_regex.test(ingredients);
-        if (contains_peanut) {
+        await collection.updateOne({
+          gtin_upc: currentUPC
+        }, {
+          $set: {
+            'contains_peanut': contains_peanut
+          }
+        });
 
-        }
+        let sesame_regex = /(\b(?:Sesame|Benne|benne seed|benniseed|Gingelly|gingelly oil|Gomasio|Halvah|Sesame flour|Sesame oil|Sesame paste|Sesame salt|Sesame seed|sesame seeds|Sesamol|Sesamum indicum|Sesemolina|Simsim|Sim sim|Tahini|Tahina|Tehina|Til)\b)/gis;
+        let contains_sesame = sesame_regex.test(ingredients);
+        await collection.updateOne({
+          gtin_upc: currentUPC
+        }, {
+          $set: {
+            'contains_sesame': contains_sesame
+          }
+        });
 
         // Shellfish:
-        let shellfish_regex = /(\b(?:Barnacle|Crab|Crawfish|crawdad|crayfish|ecrevisse|Krill|Lobster|langouste|langoustine|Moreton bay bugs|scampi|tomalley|Prawn|Shrimp|crevette|scampi|mollusks|Abalone|Clam|cherrystone|geoduck|littleneck|quahog|Cockle|Cuttlefish|Limpet|lapas|opihi|Mussels|Octopus|Oysters|Periwinkle|Sea cucumber|Sea urchin|Scallops|Snails|escargot|Squid|calamari|Whelk|Turban shell|clam extract|Surimi|Fish stock|Glucosamine|Cuttlefish|Bouillabaisse|)\b)/gis;
+        let shellfish_regex = /(\b(?:Barnacle|Crab|Crawfish|crawdad|crayfish|ecrevisse|Krill|Lobster|langouste|langoustine|Moreton bay bugs|scampi|tomalley|Prawn|Shrimp|crevette|scampi|mollusks|Abalone|Clam|clams|cherrystone|geoduck|littleneck|quahog|Cockle|Cuttlefish|Limpet|lapas|opihi|Mussels|Octopus|Oysters|Oyster|Periwinkle|Sea cucumber|Sea urchin|Scallops|Snails|escargot|Squid|calamari|Whelk|Turban shell|clam extract|Surimi|Fish stock|Glucosamine|Cuttlefish|Bouillabaisse)\b)/gis;
         let contains_shellfish = shellfish_regex.test(ingredients);
-        if (contains_shellfish) {
+        await collection.updateOne({
+          gtin_upc: currentUPC
+        }, {
+          $set: {
+            'contains_shellfish': contains_shellfish
+          }
+        });
 
-        }
 
         // Wheat:
-        let wheat_regex = /(\b(?:wheat|Bread crumbs|Bulgur|Cereal extract|Club wheat|Couscous|Cracker meal|Durum|Einkorn|Emmer|Farina|Farro|Flour|Freekeh|Hydrolyzed wheat protein|Kamut|Matzoh|matzo|matzah|matza|Seitan|Semolina|Spelt|Sprouted wheat|Triticale|Vital wheat gluten|Wheat bran hydrolysate|Wheat germ oil|Wheat grass|Wheat protein isolate|Whole wheat berries)\b)/gis;
+        let wheat_regex = /(\b(?:wheat|Bread crumbs|Bulgur|Cereal extract|Club wheat|Couscous|Cracker meal|Durum|Einkorn|Emmer|Farina|Farro|Freekeh|Hydrolyzed wheat protein|Kamut|Matzoh|matzo|matzah|matza|Seitan|Semolina|Spelt|Sprouted wheat|Triticale|Vital wheat gluten|Wheat bran hydrolysate|Wheat germ oil|Wheat grass|Wheat protein isolate|Whole wheat berries)\b)/gis;
         let contains_wheat = wheat_regex.test(ingredients);
-        if (contains_wheat) {
+        await collection.updateOne({
+          gtin_upc: currentUPC
+        }, {
+          $set: {
+            'contains_wheat': contains_wheat
+          }
+        });
 
-        }
 
         // Soy:
         let soy_regex = /(\b(?:soy|soy oil|Edamame|Miso|Natto|Shoyu|Soya|Soybean|Soy protein|Soy sauce|Tamari|Tempeh|TVP|Textured vegetable protein|Tofu)\b)/gis;
         let contains_soy = soy_regex.test(ingredients);
-        if (contains_soy) {
+        await collection.updateOne({
+          gtin_upc: currentUPC
+        }, {
+          $set: {
+            'contains_soy': contains_soy
+          }
+        });
 
-        }
 
         // Fish:
-        let fish_regex = /(\b(?:Anchovie|Anchovies|Bass|Catfish|Cod|Flounder|Grouper|Haddock|Hake|Halibut|Herring|Mahi mahi|Perch|Pike|Pollock|Salmon|Scrod|Sole|Snapper|Swordfish|Tilapia|Trout|Tuna|Fish gelatin|Fish oil|Fish sticks|Worcestershire|Bouillabaisse|Caesar)\b)/gis;
+        let fish_regex = /(\b(?:anchovy|Anchovie|Anchovies|Bass|Catfish|Cod|Flounder|Grouper|Haddock|Hake|Halibut|Herring|Mahi mahi|Perch|Pike|Pollock|Salmon|Scrod|Sole|Snapper|Swordfish|Tilapia|Trout|Tuna|Fish gelatin|Fish oil|Fish sticks|Worcestershire|Bouillabaisse|Caesar)\b)/gis;
         let contains_fish = fish_regex.test(ingredients);
-        if (contains_fish) {
+        await collection.updateOne({
+          gtin_upc: currentUPC
+        }, {
+          $set: {
+            'contains_fish': contains_fish
+          }
+        });
 
-        }
+        // Meat:
+        let meat_regex = /(\b(?:meat|beef|animal shortening||)\b)/gis;
+        let contains_meat = meat_regex.test(ingredients);
+        await collection.updateOne({
+          gtin_upc: currentUPC
+        },{
+          $set: {
+            'contains_meat': contains_meat
+          }
+        });
 
+        // Alt Meat:
+        let animalDerived_regex = /(\b(?:honey|beeswax|gelatin|carmine|caraminic acid|caramine cochineal|Glycerides|Glyceride|Isinglass|Lard|Oleic acid|oleinic acid|Pepsin|Stearic acid|octadecanoic acid|Suet|Tallow)\b)/gis;
+        let contains_altMeat = animalDerived_regex.test(ingredients);
+        await collection.updateOne({
+          gtin_upc: currentUPC
+        }, {
+          $set: {
+            'contains_altMeat': contains_altMeat
+          }
+        });
       });
-      client.close();
+      // client.close();
     });
 
   } catch (error) {
     console.log(error);
   }
 }
-// R_PRODUCTS(client);
 
-function regexTest() {
+async function DP_PRODUCTS(cli) {
   try {
-    let expression = /(\b(?:plain|mode)\b)/gis;
-    let string =  'PASTEURIZED MILK, CHEESE CULTURE, SALT, ENZYMES, ANNATTO (COLOR).';
-    console.log(expression.test(string)); // false
+    console.log('DP_PRODUCTS');
+    client.connect(err => {
+      const collection = client.db("allrgDB").collection("test_branded_food");
+      collection.find().forEach(async function (document) {
+        let currentUPC = await document.gtin_upc;
+        let contains_egg = await document.contains_egg;
+        let contains_milk = await document.contains_milk;
+        let contains_meat = await document.contains_meat;
+        let contains_fish = await document.contains_fish;
+        let contains_shellfish = await document.contains_shellfish;
+        let contains_altMeat = await document.contains_altMeat;
+
+        // attribute to vegan
+        if (contains_egg || contains_milk || contains_meat || contains_fish || contains_shellfish || contains_altMeat) {
+          // add vegan field true
+          await collection.updateOne({
+            gtin_upc: currentUPC
+          }, {
+            $set: {
+              'isVegan': false
+            }
+          });
+        } else {
+          // add vegan field false
+          await collection.updateOne({
+            gtin_upc: currentUPC
+          }, {
+            $set: {
+              'isVegan': true
+            }
+          });
+        }
+
+        // attribute to vegetarian
+        if (contains_meat || contains_fish || contains_shellfish) {
+          // add vegetarian field false
+          await collection.updateOne({
+            gtin_upc: currentUPC
+          }, {
+            $set: {
+              'isVegetarian': false
+            }
+          });
+        } else {
+          // add vegetarian field false
+          await collection.updateOne({
+            gtin_upc: currentUPC
+          }, {
+            $set: {
+              'isVegetarian': true
+            }
+          });
+        }
+      });
+      // client.close()
+    })
+
   } catch (error) {
     console.log(error);
   }
 }
-regexTest();
-async function DP_PRODUCTS() {
+
+function regexTest() {
   try {
-    // attribute to vegan
-
-    // attribute to vegetarian
-
-
+    let expression = /(\b(?:milk)\b)/gis;
+    let string = 'PASTEURIZED MILK, CHEESE CULTURE, SALT, ENZYMES, ANNATTO (COLOR).';
+    console.log(expression.test(string)); // false
   } catch (error) {
     console.log(error);
   }
@@ -232,6 +354,7 @@ async function testUpdateOne() {
     console.log(error);
   }
 }
+
 async function checkRateLimitUPC() {
   try {
     let response = await axios.get('https://api.barcodelookup.com/v2/rate-limits?key=m84lgzijx9jmie4ve8ycega3cqnx1a');
@@ -279,6 +402,7 @@ async function testing(testDoc, collection) {
     console.log(error);
   }
 }
+// R_PRODUCTS(client);
 
 module.exports = {
   model: Product,
