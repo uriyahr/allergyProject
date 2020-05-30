@@ -64,13 +64,13 @@ export default new Vuex.Store({
       }
     },
     // product filter actions
-    async filterByDP(context, payload) {
-      try {
+    // async filterByDP(context, payload) {
+    //   try {
 
-      } catch (error) {
-        console.log(error);
-      }
-    },
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // },
     async getDPProducts(context, payload) {
       try {
         let response = await axios.get("/api/product/DPfilter/" + payload._id);

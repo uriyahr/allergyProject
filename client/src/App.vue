@@ -1,14 +1,14 @@
 <template>
   <v-app id="inspire">
-    <v-app-bar id="app-bar" color="white" elevation="2" app>
+    <v-app-bar id="app-bar" color="white" elevation="0" app>
       <v-toolbar-title>
         <button @click="route('/')" :class="{ activeButton: onAllergy }" id="nav-title">safe bite</button>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <div id="rightNav">
-        <button @click="route('/search')" :class="{ activeButton : onSearch }">Search</button>
+        <button @click="route('/search')" :class="{ activeButton : onSearch }">Products</button>
         <button @click="route('/about')" :class="{ activeButton : onAbout }">About</button>
-        <button @click="route('/signin')" :class="{ activeButton : onSignIn }">Sign In</button>
+        <button @click="route('/signin')" :class="{ activeButton : onSignIn }">Login In</button>
       </div>
     </v-app-bar>
 
@@ -50,9 +50,9 @@ export default {
 </script>
 
 <style scoped>
-@import url("https://fonts.googleapis.com/css?family=Trocchi&display=swap");
-@import url("https://fonts.googleapis.com/css?family=Oswald&display=swap");
-@import url("https://fonts.googleapis.com/css?family=Old+Standard+TT:400,400i,700&display=swap");
+@import url('https://fonts.googleapis.com/css?family=Playfair+Display:600&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Lato&display=swap');
+
 #inspire {
   background-color: white;
 }
@@ -61,7 +61,7 @@ export default {
 }
 
 #nav-title {
-  font-family: "Old Standard TT", serif;
+  font-family: "Lato", serif;
   font-weight: bold;
   text-transform: lowercase !important;
   color: black;
@@ -74,7 +74,7 @@ export default {
 
 #rightNav {
   margin-right: 100px;
-  font-family: "Old Standard TT", serif;
+  font-family: 'Lato', sans-serif;
 }
 
 button {

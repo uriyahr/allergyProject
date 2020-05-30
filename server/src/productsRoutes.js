@@ -11,27 +11,6 @@ const client = new MongoClient(uri, {
   useUnifiedTopology: true
 });
 
-// altering existing product data
-// client.connect(err => {
-//   const collection = client.db("allrgDB").collection("test_branded_food");
-//   collection.find().forEach(async function(document){
-//     let currentUPC = document.gtin_upc;
-//     // console.log('currentUPC',currentUPC);
-//     let newData = await getProductByUPC(currentUPC);
-//     // console.log('newData',newData);
-//     await collection.updateOne(
-//       {gtin_upc: currentUPC},
-//       {$set: {
-//         "product_name": newData.product_name,
-//         "description": newData.description,
-//         "images": newData.images,
-//         "stores": newData.stores
-//       }}
-//     );
-//   });
-//   client.close();
-// });
-
 const productSchema = new mongoose.Schema({
   "_id": Number,
   "fdc_id": Number,
@@ -70,8 +49,7 @@ const testProduct = mongoose.model('testProduct', testProductSchema, 'test_brand
 
 router.get("/", async (req, res) => {
   try {
-    let products = await Product.find().limit(30);
-    console.log(products);
+    let products = await testProduct.find().limit(30);
     return res.send(products);
   } catch (error) {
     console.log(error);
@@ -125,6 +103,7 @@ async function R_PRODUCTS_DOCS(cli) {
         let currentUPC = await document.gtin_upc;
 
         // https://www.foodallergy.org/living-food-allergies/food-allergy-essentials/common-allergens
+        // https://www.dummies.com/food-drink/recipes/vegetarian-vegan/hidden-animal-ingredients-in-foods/
         // Milk Free:
         let milk_regex = /(\b(?:Milk|Butter|butter fat|butter oil|butter acid|Buttermilk|Casein|Casein hydrolysate|Caseinates|Cheese|Cottage cheese|Cream|Curd|Custard|Diacetyl|Ghee|Half-and-half|Lactalbumin|lactalbumin phosphate|Lactoferrin|Lactose|Lactulose|milkfat|Milk protein hydrolysate|Pudding|Recaldent|Rennet casein|Sour cream|sour cream solids|Sour milk solids|Tagatose|Whey|Whey protein hydrolysate|Yogurt)\b)/gis;
         let contains_milk = milk_regex.test(ingredients);
@@ -191,7 +170,6 @@ async function R_PRODUCTS_DOCS(cli) {
           }
         });
 
-
         // Soy:
         let soy_regex = /(\b(?:soy|soy oil|Edamame|Miso|Natto|Shoyu|Soya|Soybean|Soy protein|Soy sauce|Tamari|Tempeh|TVP|Textured vegetable protein|Tofu)\b)/gis;
         let contains_soy = soy_regex.test(ingredients);
@@ -228,11 +206,6 @@ async function R_PRODUCTS_DOCS(cli) {
         // Meat:
         let meat_regex = /(\b(?:beef|Turkey|Chicken|Pork|bacon|animal shortening|breast|breasts|ribs|duck|lamb|ham|hams|bison|shoulders|poultry|loins|tenderloins|cured with|cured)\b)/gis;
 
-        /**
-         * cured
-         * cured with
-         * 15900000258
-         */
         let contains_meat = meat_regex.test(ingredients);
         await collection.updateOne({
           gtin_upc: currentUPC
@@ -334,6 +307,7 @@ function regexTest() {
     console.log(error);
   }
 }
+
 async function testUpdateOne() {
   try {
     await Product.find({
@@ -406,7 +380,6 @@ async function testing(testDoc, collection) {
     console.log(error);
   }
 }
-// R_PRODUCTS(client);
 
 module.exports = {
   model: Product,
