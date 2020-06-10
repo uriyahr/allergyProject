@@ -49,20 +49,27 @@ const testProduct = mongoose.model('testProduct', testProductSchema, 'test_brand
 
 router.get("/", async (req, res) => {
   try {
-    let products = await testProduct.find().limit(30);
+    let products = await testProduct.find();
     return res.send(products);
   } catch (error) {
     console.log(error);
     return res.sendStatus(500);
   }
 });
-router.get('/:_id', async (req, res) => {
+router.get('/vegan', async (req, res) => {
   try {
-    let product = await Product.findOne({
-      _id: req.params._id
-    });
-
+    let product = await Product.find( {isVegan: true} );
     console.log(product);
+    return res.send(product);
+  } catch (error) {
+    console.log(error);
+    return res.sendStatus(500);
+  }
+});
+
+router.get(('/vegetarian'), async (req,res) => {
+  try {
+    let product = await Product.find( {isVegetarian: true} );
     return res.send(product);
   } catch (error) {
     console.log(error);
@@ -93,7 +100,7 @@ router.get('/RFilter/:_id', async (req, res) => {
   }
 });
 
-async function R_PRODUCTS_DOCS(cli) {
+async function R_PRODUCTS_DOCS(cli) { // restrictions preference
   try {
     console.log('R_PRODUCTS function');
     client.connect(err => {
@@ -209,7 +216,7 @@ async function R_PRODUCTS_DOCS(cli) {
         let contains_meat = meat_regex.test(ingredients);
         await collection.updateOne({
           gtin_upc: currentUPC
-        },{
+        }, {
           $set: {
             'contains_meat': contains_meat
           }
@@ -234,7 +241,7 @@ async function R_PRODUCTS_DOCS(cli) {
   }
 }
 
-async function DP_PRODUCTS(cli) {
+async function DP_PRODUCTS(cli) { // dietary preferences
   try {
     console.log('DP_PRODUCTS');
     client.connect(err => {

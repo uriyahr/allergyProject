@@ -58,13 +58,14 @@ export default {
 }
 #app-bar {
   position: fixed;
+  z-index: 99999;
 }
 
 #nav-title {
   font-family: "Lato", serif;
   font-weight: bold;
   text-transform: lowercase !important;
-  color: black;
+  color: #074d37;
   font-size: 28px;
   letter-spacing: 0px;
   margin-left: 110px;
@@ -75,13 +76,14 @@ export default {
 #rightNav {
   margin-right: 100px;
   font-family: 'Lato', sans-serif;
+  color: #074d37;
 }
 
 button {
   font-size: 13px;
   letter-spacing: 3px;
   text-transform: none !important;
-  color: black;
+  color: #074d37;
   margin: 13px;
   padding-bottom: 3px;
 }
@@ -92,7 +94,7 @@ button:focus {
 /* Navigation Bar Animation  */
 #rightNav > button {
   position: relative;
-  color: #0b382c;
+  color: #074d37;
   text-decoration: none;
 }
 
@@ -103,7 +105,7 @@ button:focus {
   height: 2px;
   bottom: 0px;
   left: 0;
-  background-color: #0b382c;
+  background-color: #074d37;
   visibility: hidden;
   -webkit-transform: scaleX(0);
   transform: scaleX(0);

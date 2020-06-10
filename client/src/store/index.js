@@ -54,7 +54,15 @@ export default new Vuex.Store({
         console.log(error);
       }
     },
-
+    async getVeganProducts(context){
+      try {
+        console.log('getting products from store');
+        let response = await axios.get("/api/products/vegan");
+        context.commit('setProducts', response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    },
     async getProduct(context, payload) {
       try {
         let response = await axios.get("/api/product/" + payload._id);
