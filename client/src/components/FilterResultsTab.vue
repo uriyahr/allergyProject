@@ -7,9 +7,10 @@
             <!-- display dietary preference -->
             <v-chip-group
               mandetory
-              colum
+              column
               active-class="primary-text"
-              v-if="selectedPreference != 'None'">
+              v-if="selectedPreference != 'None'"
+            >
               <v-chip class="ma-2" label color="white">Dietary Preference:</v-chip>
               <v-chip class="ma-2" label color="success">{{ selectedPreference }}</v-chip>
             </v-chip-group>
@@ -42,7 +43,10 @@ export default {
   data: () => ({}),
   methods: {
     async removeFilter(filter) {
-      this.$props.selectedFilter.splice( this.$props.selectedFilter.indexOf(filter), 1);
+      this.$props.selectedFilter.splice(
+        this.$props.selectedFilter.indexOf(filter),
+        1
+      );
       this.$props.selectedFilter = [...this.$props.selectedFilter];
     }
   }
